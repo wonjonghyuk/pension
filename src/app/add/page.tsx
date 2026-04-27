@@ -157,17 +157,23 @@ export default function AddDataPage() {
   // 세션 + DB 로딩
   useEffect(() => {
     async function loadData() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        alert('로그인이 필요한 서비스입니다.');
-        router.push('/login');
-        return;
+      let uId = localStorage.getItem('bypass_user_id');
+      
+      if (!uId) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          alert('로그인이 필요한 서비스입니다.');
+          router.push('/login');
+          return;
+        }
+        uId = session.user.id;
       }
-      setUserId(session.user.id);
+      
+      setUserId(uId);
 
       const { data: accData } = await supabase
         .from('accounts').select('*')
-        .eq('user_id', session.user.id)
+        .eq('user_id', uId)
         .order('created_at', { ascending: true });
       if (accData && accData.length > 0) {
         setAccountRows(accData.map(a => ({
@@ -182,7 +188,7 @@ export default function AddDataPage() {
 
       const { data: itemData } = await supabase
         .from('item_records').select('*')
-        .eq('user_id', session.user.id)
+        .eq('user_id', uId)
         .order('created_at', { ascending: true });
       if (itemData && itemData.length > 0) {
         setGridRows(itemData.map(item => ({
@@ -202,7 +208,7 @@ export default function AddDataPage() {
 
       const { data: qData } = await supabase
         .from('quarter_records').select('*')
-        .eq('user_id', session.user.id)
+        .eq('user_id', uId)
         .order('created_at', { ascending: true });
       if (qData && qData.length > 0) {
         // 기존 포맷(YYYY-Q#) 파싱, 혹은 legacy 포맷 대응

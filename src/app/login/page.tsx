@@ -15,7 +15,15 @@ export default function LoginPage() {
     setLoading(true);
     setMessage({ type: null, text: '' });
 
-    // 1. 로그인 먼저 시도
+    // "5555" 비밀번호 입력 시 강제 우회 (테스트용)
+    if (password === '5555' || password === '555555') {
+      localStorage.setItem('bypass_user_id', 'ad5b5c61-96cf-48c7-b22b-7fd4566e047d');
+      setMessage({ type: 'success', text: '테스트용 비밀번호 확인! (우회 접속) 메인화면으로 이동합니다...' });
+      setTimeout(() => { window.location.href = '/'; }, 1000);
+      return;
+    }
+
+    // 1. 기존 정상 로그인 시도
     let { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error?.message.includes('Invalid login credentials')) {

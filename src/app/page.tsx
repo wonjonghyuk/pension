@@ -85,6 +85,12 @@ export default function DashboardPage() {
 
   // 1. 유저 계정 로드
   useEffect(() => {
+    const bypassId = localStorage.getItem('bypass_user_id');
+    if (bypassId) {
+      setUserEmail('wonjonghyuk@gmail.com (우회모드)');
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setUserEmail(session.user.email ?? null);
     });
@@ -97,13 +103,16 @@ export default function DashboardPage() {
   // 2. DB 데이터 로드
   useEffect(() => {
     async function loadDashData() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        setIsLoading(false);
-        return;
-      }
+      let userId = localStorage.getItem('bypass_user_id');
 
-      const userId = session.user.id;
+      if (!userId) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          setIsLoading(false);
+          return;
+        }
+        userId = session.user.id;
+      }
       
       const { data: aData } = await supabase.from('accounts').select('*').eq('user_id', userId);
       if (aData) setRawAccounts(aData);
