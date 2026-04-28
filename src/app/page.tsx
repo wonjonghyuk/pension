@@ -28,26 +28,39 @@ const CustomizedTreemapContent = (props: any) => {
   
   const returnRate = Number(props.returnRate ?? props.payload?.returnRate ?? 0);
   const color = getReturnColor(returnRate);
-  
-  if (width < 30 || height < 30) return null;
-
   const isLightColor = Math.abs(returnRate) <= 5 && returnRate !== 0;
   const textColor = isLightColor ? "#1f2937" : "#ffffff";
   const displayName = name || '';
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={color} stroke="#ffffff" strokeWidth="0" rx={6} />
-      {width > 50 && height > 40 && (
+      {width > 5 && height > 5 && (
+        <rect x={x} y={y} width={width} height={height} fill={color} stroke="#ffffff" strokeWidth="0" rx={6} />
+      )}
+      
+      {width > 65 && height > 40 ? (
         <>
-          <text x={x + 8} y={y + 18} fill={textColor} fontSize={11} fontWeight="300" className="truncate tracking-tighter">
-            {displayName.length > 8 && width < 100 ? displayName.substring(0,8) + '..' : displayName}
+          <text x={x + 6} y={y + 18} fill={textColor} fontSize={11} fontWeight="300" className="tracking-tighter">
+            {displayName.length > 7 ? displayName.substring(0,7) + '..' : displayName}
           </text>
-          <text x={x + 8} y={y + 32} fill={textColor} fontSize={10} fontWeight="300" opacity={0.9} className="tracking-tighter">
+          <text x={x + 6} y={y + 32} fill={textColor} fontSize={10} fontWeight="300" opacity={0.9} className="tracking-tighter">
              {returnRate > 0 ? '+' : ''}{returnRate.toFixed(1)}%
           </text>
         </>
-      )}
+      ) : width > 35 && height > 25 ? (
+        <>
+          <text x={x + 4} y={y + 14} fill={textColor} fontSize={9} fontWeight="300" className="tracking-tighter">
+            {displayName.length > 4 ? displayName.substring(0,4) + '..' : displayName}
+          </text>
+          <text x={x + 4} y={y + 24} fill={textColor} fontSize={8} fontWeight="300" opacity={0.9} className="tracking-tighter">
+             {returnRate > 0 ? '+' : ''}{Math.round(returnRate)}%
+          </text>
+        </>
+      ) : width > 20 && height > 15 ? (
+        <text x={x + 2} y={y + 12} fill={textColor} fontSize={8} fontWeight="300" className="tracking-tighter">
+          {displayName.substring(0, 2)}..
+        </text>
+      ) : null}
     </g>
   );
 };
