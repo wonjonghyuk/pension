@@ -40,10 +40,10 @@ const CustomizedTreemapContent = (props: any) => {
       <rect x={x} y={y} width={width} height={height} fill={color} stroke="#ffffff" strokeWidth="0" rx={6} />
       {width > 50 && height > 40 && (
         <>
-          <text x={x + 8} y={y + 20} fill={textColor} fontSize={13} fontWeight="500" className="truncate tracking-tight">
+          <text x={x + 8} y={y + 20} fill={textColor} fontSize={13} fontWeight="normal" className="truncate tracking-tight">
             {displayName.length > 8 && width < 100 ? displayName.substring(0,8) + '..' : displayName}
           </text>
-          <text x={x + 8} y={y + 36} fill={textColor} fontSize={12} fontWeight="400" opacity={0.9} className="tracking-tight">
+          <text x={x + 8} y={y + 36} fill={textColor} fontSize={12} fontWeight="normal" opacity={0.9} className="tracking-tight">
              {returnRate > 0 ? '+' : ''}{returnRate.toFixed(1)}%
           </text>
         </>
@@ -56,15 +56,15 @@ const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-gray-900/95 backdrop-blur-sm border-gray-800 text-white p-3 rounded-xl shadow-xl z-50">
+      <div className="bg-white/95 backdrop-blur-sm border border-gray-100 text-gray-800 p-3 rounded-xl shadow-xl z-50">
         <p className="font-bold text-sm mb-1">{data.name}</p>
-        <p className="text-xs text-gray-300">평가 자산 비중 합산: {formatCurrency(data.size)}</p>
-        <p className="text-xs text-gray-400 mb-1">순수 매수 합산: {formatCurrency(data.invested)}</p>
-        <div className="pt-1 border-t border-gray-700/50 flex justify-between items-center">
-           <p className={`text-xs font-bold mt-1 ${data.returnRate > 0 ? 'text-red-400' : data.returnRate < 0 ? 'text-blue-400' : 'text-gray-300'}`}>
+        <p className="text-xs text-gray-600">평가 자산 비중 합산: {formatCurrency(data.size)}</p>
+        <p className="text-xs text-gray-500 mb-1">순수 매수 합산: {formatCurrency(data.invested)}</p>
+        <div className="pt-1 border-t border-gray-100/80 flex justify-between items-center">
+           <p className={`text-xs font-bold mt-1 ${data.returnRate > 0 ? 'text-red-500' : data.returnRate < 0 ? 'text-blue-500' : 'text-gray-500'}`}>
             종목 수익률: {data.returnRate > 0 ? '+' : ''}{data.returnRate.toFixed(2)}%
           </p>
-          {data.isAuto && <span className="text-[10px] bg-cyan-900/50 text-cyan-400 px-1.5 py-0.5 rounded font-bold">실시간 연동</span>}
+          {data.isAuto && <span className="text-[10px] bg-cyan-50 text-cyan-600 border border-cyan-100 px-1.5 py-0.5 rounded font-bold">실시간 연동</span>}
         </div>
       </div>
     );
@@ -456,7 +456,7 @@ export default function DashboardPage() {
                           />
 
                           <RechartsTooltip
-                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', fontSize: 12 }}
+                            contentStyle={{ backgroundColor: '#ffffff', color: '#1f2937', borderRadius: '12px', border: '1px solid #f3f4f6', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', fontSize: 13, fontWeight: 500 }}
                             formatter={(value: any, name: any) => {
                               if (name === 'quarterRate') return [`${Number(value).toFixed(2)}%`, '분기 수익률'];
                               if (name === 'returnRate')  return [`${Number(value).toFixed(2)}%`, '누적 수익률'];
