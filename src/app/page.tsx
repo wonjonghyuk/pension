@@ -40,10 +40,10 @@ const CustomizedTreemapContent = (props: any) => {
       <rect x={x} y={y} width={width} height={height} fill={color} stroke="#ffffff" strokeWidth="0" rx={6} />
       {width > 50 && height > 40 && (
         <>
-          <text x={x + 8} y={y + 20} fill={textColor} fontSize={13} fontWeight="normal" className="truncate tracking-tight">
+          <text x={x + 8} y={y + 18} fill={textColor} fontSize={11} fontWeight="300" className="truncate tracking-tighter">
             {displayName.length > 8 && width < 100 ? displayName.substring(0,8) + '..' : displayName}
           </text>
-          <text x={x + 8} y={y + 36} fill={textColor} fontSize={12} fontWeight="normal" opacity={0.9} className="tracking-tight">
+          <text x={x + 8} y={y + 32} fill={textColor} fontSize={10} fontWeight="300" opacity={0.9} className="tracking-tighter">
              {returnRate > 0 ? '+' : ''}{returnRate.toFixed(1)}%
           </text>
         </>
